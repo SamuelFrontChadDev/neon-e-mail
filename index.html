@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEON//MAIL - Terminal System v2.0</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="crt-active theme-purple">
+  <!-- Camada CRT + Grid 3D de fundo -->
+  <div class="crt-overlay" id="crtOverlay"></div>
+  <div class="retro-grid-bg"></div>
+
+  <div class="app-container">
+    
+    <!-- Cabeçalho -->
+    <header class="main-header">
+      <div class="logo-area">
+        <h1 class="logo-text glitch" data-text="NEON//MAIL">NEON//MAIL</h1>
+        <span class="status-indicator">
+          <span class="status-dot online"></span> SYS_ONLINE [PORT:587]
+        </span>
+      </div>
+
+      <nav class="nav-menu" id="navMenu">
+        <button class="nav-btn active" data-target="section-send">&gt; TRANSMITIR</button>
+        <button class="nav-btn" data-target="section-history">&gt; HISTÓRICO</button>
+        <button class="nav-btn" data-target="section-settings">&gt; AJUSTES</button>
+      </nav>
+
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <!-- Grid de Conteúdo -->
+    <main class="content-grid">
+      
+      <!-- SEÇÃO 1: TRANSMITIR -->
+      <section id="section-send" class="content-section active">
+        <div class="panel main-panel">
+          <div class="panel-header">
+            <div class="corner-decor top-left"></div>
+            <div class="corner-decor top-right"></div>
+            <h2>// TRANSMISSION CONSOLE</h2>
+            <span class="panel-subtitle">SYS_STATUS: READY_TO_SEND</span>
+          </div>
+
+          <form id="emailForm" novalidate>
+            <!-- Destinatário -->
+            <div class="form-group">
+              <label for="recipientEmail">[ DESTINATÁRIO * ]</label>
+              <div class="input-wrapper">
+                <input type="email" id="recipientEmail" placeholder="recipient@cyber.net" required />
+              </div>
+              <span class="error-msg" id="emailError">&gt; ERROR: ENDEREÇO DE E-MAIL INVÁLIDO</span>
+            </div>
+
+            <!-- Nome do Destinatário -->
+            <div class="form-group">
+              <label for="recipientName">[ NOME DO DESTINATÁRIO ]</label>
+              <div class="input-wrapper">
+                <input type="text" id="recipientName" placeholder="Ex: Deckard" />
+              </div>
+            </div>
+
+            <!-- Assunto -->
+            <div class="form-group">
+              <label for="emailSubject">[ ASSUNTO * ]</label>
+              <div class="input-wrapper">
+                <input type="text" id="emailSubject" placeholder="Assunto da transmissão..." required />
+              </div>
+              <span class="error-msg" id="subjectError">&gt; ERROR: ASSUNTO OBRIGATÓRIO</span>
+            </div>
+
+            <!-- Mensagem -->
+            <div class="form-group">
+              <div class="label-row">
+                <label for="emailMessage">[ MENSAGEM * ]</label>
+
+                <!-- Toolbar + Emoji Popover -->
+                <div class="editor-toolbar">
+                  <button type="button" class="tool-btn" data-tag="b" title="Negrito">[B]</button>
+                  <button type="button" class="tool-btn" data-tag="i" title="Itálico">[I]</button>
+                  <button type="button" class="tool-btn" data-tag="u" title="Sublinhado">[U]</button>
+                  
+                  <div class="emoji-picker-wrapper">
+                    <button type="button" class="tool-btn highlight" id="emojiToggleBtn" title="Inserir Emoji">[ 🙂 EMOJI ]</button>
+                    
+                    <div class="emoji-popover hidden" id="emojiPopover">
+                      <div class="popover-header">
+                        <span>SELECT_EMOJI</span>
+                        <button type="button" class="popover-close" id="emojiCloseBtn">&times;</button>
+                      </div>
+                      <div class="emoji-grid" id="emojiGrid">
+                        <button type="button" class="emoji-item">⚡</button>
+                        <button type="button" class="emoji-item">💾</button>
+                        <button type="button" class="emoji-item">📼</button>
+                        <button type="button" class="emoji-item">👾</button>
+                        <button type="button" class="emoji-item">🕹️</button>
+                        <button type="button" class="emoji-item">🕶️</button>
+                        <button type="button" class="emoji-item">🔥</button>
+                        <button type="button" class="emoji-item">✨</button>
+                        <button type="button" class="emoji-item">🤖</button>
+                        <button type="button" class="emoji-item">🌐</button>
+                        <button type="button" class="emoji-item">📡</button>
+                        <button type="button" class="emoji-item">🚀</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="input-wrapper">
+                <textarea id="emailMessage" rows="8" maxlength="5000" placeholder="Digite sua mensagem cifrada aqui..." required></textarea>
+              </div>
+              
+              <div class="textarea-footer">
+                <span class="error-msg" id="messageError">&gt; ERROR: MENSAGEM VAZIA</span>
+                <span class="char-counter" id="charCounter">0 / 5000</span>
+              </div>
+            </div>
+
+            <!-- Ações -->
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="btnSend">
+                &gt;&gt; ENVIAR TRANSMISSÃO
+              </button>
+              <button type="button" class="btn btn-secondary" id="btnClear">
+                [ LIMPAR ]
+              </button>
+            </div>
+          </form>
+
+          <!-- Barra de Progresso -->
+          <div class="progress-container hidden" id="progressContainer">
+            <div class="progress-status" id="progressStatus">CONNECTING_TO_NODES...</div>
+            <div class="progress-bar-outer">
+              <div class="progress-bar-inner" id="progressBar"></div>
+            </div>
+            <div class="progress-percent" id="progressPercent">0%</div>
+          </div>
+
+          <!-- Caixa de Status -->
+          <div class="status-box hidden" id="statusBox">
+            <h3 id="statusTitle">TRANSMISSION COMPLETE</h3>
+            <p id="statusDetails">Sua mensagem foi entregue na rede neon.</p>
+            <button class="btn btn-primary" id="btnResetForm" style="margin-top: 15px;">&gt;&gt; NOVA TRANSMISSÃO</button>
+          </div>
+        </div>
+
+        <!-- Pré-visualização Lateral -->
+        <div class="panel preview-panel">
+          <div class="panel-header">
+            <h3>// MESSAGE PREVIEW</h3>
+          </div>
+          <div class="preview-content">
+            <div class="preview-line"><span class="lbl">FROM:</span> NEON MAIL &lt;system@neonmail.net&gt;</div>
+            <div class="preview-line"><span class="lbl">TO:</span> <span id="prevTo">---</span></div>
+            <div class="preview-line"><span class="lbl">SUBJECT:</span> <span id="prevSubject">---</span></div>
+            <hr class="neon-divider" />
+            <div class="preview-body" id="prevBody">Aguardando dados...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 2: TELA DE HISTÓRICO -->
+      <section id="section-history" class="content-section">
+        <div class="panel full-panel">
+          <div class="panel-header">
+            <div class="corner-decor top-left"></div>
+            <div class="corner-decor top-right"></div>
+            <h2>// TRANSMISSION LOGS</h2>
+            <span class="panel-subtitle">DATABANK: LOCAL_RECORDS</span>
+          </div>
+
+          <!-- Controles de Busca e Filtro -->
+          <div class="history-controls">
+            <div class="input-wrapper search-wrapper">
+              <input type="text" id="historySearch" placeholder="BUSCAR REGISTROS POR DESTINATÁRIO OU ASSUNTO..." />
+            </div>
+            <div class="filter-buttons">
+              <button class="filter-btn active" data-filter="ALL">[ TODOS ]</button>
+              <button class="filter-btn" data-filter="SENT">[ ENVIADOS ]</button>
+              <button class="filter-btn" data-filter="FAILED">[ FALHAS ]</button>
+            </div>
+          </div>
+
+          <!-- Tabela de Histórico -->
+          <div class="table-wrapper">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>DESTINATÁRIO</th>
+                  <th>ASSUNTO</th>
+                  <th>DATA / HORA</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody id="historyTableBody">
+                <!-- Preenchido via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 3: TELA DE AJUSTES / CONFIGURAÇÕES -->
+      <section id="section-settings" class="content-section">
+        <div class="panel full-panel">
+          <div class="panel-header">
+            <div class="corner-decor top-left"></div>
+            <div class="corner-decor top-right"></div>
+            <h2>// CONFIGURAÇÕES DO SISTEMA</h2>
+            <span class="panel-subtitle">HARDWARE & VISUAL MATRIX</span>
+          </div>
+
+          <div class="settings-grid">
+            <!-- Opção de Tema -->
+            <div class="setting-card">
+              <div class="setting-info">
+                <h3>PALETA DE CORES NEON</h3>
+                <p>Altere a combinação de cores dos efeitos synthwave e das luzes neon.</p>
+              </div>
+              <div class="setting-action">
+                <select id="themeSelect">
+                  <option value="theme-purple">Purple Neon (Synthwave)</option>
+                  <option value="theme-pink">Pink Neon (Vaporwave)</option>
+                  <option value="theme-yellow">Yellow Neon (Outrun)</option>
+                  <option value="theme-cyber">Cyber Blue (Matrix)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Opção de CRT -->
+            <div class="setting-card">
+              <div class="setting-info">
+                <h3>MONITOR CRT (SCANLINES)</h3>
+                <p>Ativa/desativa o filtro visual de linhas de varredura estilo monitor antigo.</p>
+              </div>
+              <div class="setting-action">
+                <button class="btn btn-secondary" id="toggleCRT">[ CRT: ATIVADO ]</button>
+              </div>
+            </div>
+
+            <!-- Opção de Som -->
+            <div class="setting-card">
+              <div class="setting-info">
+                <h3>SINAIS SONOROS</h3>
+                <p>Efeitos de áudio ao interagir e transmitir dados pelo terminal.</p>
+              </div>
+              <div class="setting-action">
+                <button class="btn btn-secondary" id
